@@ -52,6 +52,16 @@ p {
   font-size: 25px;
 }
 
+button {
+  border: none;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.nav-buttons {
+  
+}
+
 .correct-location {
   background-color: #FDDE59;
 }

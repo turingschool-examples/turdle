@@ -11,6 +11,10 @@ var keyLetters = document.querySelectorAll('span');
 // Event Listeners
 window.addEventListener('load', setGame);
 
+for (var i = 0; i < inputs.length; i++) {
+  inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
+}
+
 guessButton.addEventListener('click', submitGuess);
 
 // Functions
@@ -32,6 +36,11 @@ function updateInputPermissions() {
       inputs[i].disabled = false;
     }
   }
+}
+
+function moveToNextInput(e) {
+  var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
+  inputs[indexOfNext].focus();
 }
 
 function submitGuess() {
