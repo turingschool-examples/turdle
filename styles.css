@@ -1,0 +1,55 @@
+/*
+
+COLORS
+
+teal: #7ACFCA
+light teal: #C7EEE4
+green: #599641
+yellow (correct spot): #FDDE59
+blue (wrong spot): #5271FF
+gray (wrong): #A6A6A6
+
+*/
+
+* {
+  /* border: 2px solid blue; */
+  font-family: 'Fredoka One', cursive;
+}
+
+body {
+  background-color: #7ACFCA;
+}
+
+header {
+  text-align: center;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  height: 50px;
+  width: 50px;
+  font-size: 40px;
+  text-align: center;
+  border: none;
+}
+
+.correct-location {
+  background-color: #FDDE59;
+}
+
+.wrong-location {
+  background-color: #5271FF;
+}
+
+.wrong {
+  background-color: #A6A6A6;
+}
