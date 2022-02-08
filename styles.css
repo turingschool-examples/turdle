@@ -42,6 +42,11 @@ input {
   border: none;
 }
 
+input:focus {
+  outline: none;
+  border: 2px solid #FDDE59;
+}
+
 #key-section {
   padding: 25px;
   padding-top: 0;
@@ -58,8 +63,23 @@ button {
   font-size: 20px;
 }
 
-.nav-buttons {
-  
+.nav-button {
+  margin-top: 10px;
+  width: 200px;
+  margin-right: -160px;
+  color: #C7EEE4;
+  background-color: #599641;
+  letter-spacing: 2px;
+}
+
+.nav-button:hover {
+  background-color: #C7EEE4;
+  color: #599641;
+}
+
+.active {
+  color: #599641;
+  background-color: #FDDE59;
 }
 
 .correct-location {

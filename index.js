@@ -15,6 +15,10 @@ for (var i = 0; i < inputs.length; i++) {
   inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
 }
 
+for (var i = 0; i < keyLetters.length; i++) {
+  keyLetters[i].addEventListener('click', function() { clickLetter(event) });
+}
+
 guessButton.addEventListener('click', submitGuess);
 
 // Functions
@@ -36,11 +40,32 @@ function updateInputPermissions() {
       inputs[i].disabled = false;
     }
   }
+
+  inputs[0].focus();
 }
 
 function moveToNextInput(e) {
-  var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
-  inputs[indexOfNext].focus();
+  var key = e.keyCode || e.charCode;
+
+  if( key !== 8 && key !== 46 ) {
+    var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
+    inputs[indexOfNext].focus();
+  }
+}
+
+function clickLetter(e) {
+  var activeInput = null;
+  var activeIndex = null;
+
+  for (var i = 0; i < inputs.length; i++) {
+    if(inputs[i].id.includes(`-${currentRow}-`) && !inputs[i].value && !activeInput) {
+      activeInput = inputs[i];
+      activeIndex = i;
+    }
+  }
+
+  activeInput.value = e.target.innerText;
+  inputs[activeIndex + 1].focus();
 }
 
 function submitGuess() {
