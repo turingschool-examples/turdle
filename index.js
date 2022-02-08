@@ -6,6 +6,7 @@ var guess = '';
 // Query Selectors
 var inputs = document.querySelectorAll('input');
 var guessButton = document.querySelector('#guess-button');
+var keyLetters = document.querySelectorAll('span');
 
 // Event Listeners
 window.addEventListener('load', setGame);
@@ -35,7 +36,7 @@ function updateInputPermissions() {
 
 function submitGuess() {
   if (checkIsWord()) {
-    checkGuess();
+    compareGuess();
     if (checkForWin()) {
       declareWinner();
     } else {
@@ -48,7 +49,7 @@ function submitGuess() {
 
 function checkIsWord() {
   guess = '';
-  
+
   for(var i = 0; i < inputs.length; i++) {
     if(inputs[i].id.includes(`-${currentRow}-`)) {
       guess += inputs[i].value;
@@ -58,23 +59,26 @@ function checkIsWord() {
   return words.includes(guess);
 }
 
-function checkGuess() {
+function compareGuess() {
   var guessLetters = guess.split('');
 
   for (var i = 0; i < guessLetters.length; i++) {
 
-    if (winningWord.split('')[i] === guessLetters[i]) {
-      updateColor(i, 'correct-location');
-    } else if (winningWord.includes(guessLetters[i])) {
-      updateColor(i, 'wrong-location');
+    if (winningWord.includes(guessLetters[i]) && winningWord.split('')[i] !== guessLetters[i]) {
+      updateBoxColor(i, 'wrong-location');
+      updateKeyColor(guessLetters[i], 'wrong-location-key');
+    } else if (winningWord.split('')[i] === guessLetters[i]) {
+      updateBoxColor(i, 'correct-location');
+      updateKeyColor(guessLetters[i], 'correct-location-key');
     } else {
-      updateColor(i, 'wrong');
+      updateBoxColor(i, 'wrong');
+      updateKeyColor(guessLetters[i], 'wrong-key');
     }
   }
 
 }
 
-function updateColor(letterLocation, className) {
+function updateBoxColor(letterLocation, className) {
   var row = [];
 
   for (var i = 0; i < inputs.length; i++) {
@@ -84,6 +88,18 @@ function updateColor(letterLocation, className) {
   }
 
   row[letterLocation].classList.add(className);
+}
+
+function updateKeyColor(letter, className) {
+  var keyLetter = null;
+
+  for (var i = 0; i < keyLetters.length; i++) {
+    if (keyLetters[i].innerText === letter) {
+      keyLetter = keyLetters[i];
+    }
+  }
+
+  keyLetter.classList.add(className);
 }
 
 function checkForWin() {
