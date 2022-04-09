@@ -1,17 +1,22 @@
 /*
-
 COLORS
-
-teal: #7ACFCA
-light teal: #C7EEE4
-green: #599641
-yellow (correct spot): #FDDE59
-blue (wrong spot): #5271FF
-gray (wrong): #A6A6A6
-
+  teal: #7ACFCA
+  light teal: #C7EEE4
+  green: #599641
+  yellow (correct spot): #FDDE59
+  blue (wrong spot): #5271FF
+  gray (wrong): #A6A6A6
 */
 
 /* GENERAL */
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 * {
   font-family: 'Fredoka One', cursive;
@@ -21,20 +26,48 @@ body {
   background-color: #7ACFCA;
 }
 
-header {
-  text-align: center;
-}
-
 main {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 p {
   font-size: 25px;
 }
 
+#key-section,
+#game-section,
+#rules-section,
+#stats-section,
+nav {
+  width: 33%;
+}
+
+/* HEADER */
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h1 {
+  font-size: 45px;
+}
+
+img {
+  width: 20%;
+}
+
+.space-holder {
+  width: 20%;
+}
+
 /* GAME BOARD (grid) */
+
+table {
+ margin: auto;
+}
 
 input {
   height: 50px;
@@ -42,6 +75,7 @@ input {
   font-size: 40px;
   text-align: center;
   border: none;
+  margin: 3px;
 }
 
 input:focus {
@@ -85,12 +119,12 @@ button {
 nav {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
 }
 
 .nav-button {
   margin-top: 10px;
   width: 200px;
-  margin-right: -160px;
   color: #C7EEE4;
   background-color: #599641;
   letter-spacing: 2px;
@@ -127,6 +161,7 @@ nav {
 }
 
 /* RULES & STATS */
+
 #rules-section,
 #stats-section {
   text-align: center;
@@ -139,6 +174,7 @@ h3 {
 .informational-text {
   font-size: 16px;
   font-weight: normal;
+  margin: 25px;
 }
 
 .example-text {
