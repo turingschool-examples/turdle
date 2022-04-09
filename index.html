@@ -111,9 +111,9 @@
         </div>
       </section>
       <section id="rules-section" class="collapsed">
-        <h3>RULES</h3>
-        <p class="rules-text">Try to guess the Turdle of the Day in 6 or fewer guesses.</p>
-        <p class="rules-text">After each guess, you will recieve feedback on your guess.</p>
+        <h3>GAME RULES</h3>
+        <p class="informational-text">Try to guess the Turdle of the Day in 6 or fewer guesses.</p>
+        <p class="informational-text">After each guess, you will recieve feedback on your guess.</p>
         <p class="example-text">
           <span class="example-wrong">P</span>
           <span class="example-wrong">I</span>
@@ -121,7 +121,7 @@
           <span class="example-wrong">Z</span>
           <span class="example-wrong">A</span>
         </p>
-        <p class="rules-text">None of these letters are in the word at all.</p>
+        <p class="informational-text">None of these letters are in the word at all.</p>
         <p class="example-text">
           <span class="example-wrong">L</span>
           <span class="example-wrong-location">E</span>
@@ -129,7 +129,7 @@
           <span class="example-wrong-location">R</span>
           <span class="example-wrong">N</span>
         </p>
-        <p class="rules-text">The letters <strong>E</strong> and <strong>R</strong> are in the word, but in different locations.</p>
+        <p class="informational-text">The letters <strong>E</strong> and <strong>R</strong> are in the word, but in different locations.</p>
         <p class="example-text">
           <span class="example-wrong">L</span>
           <span class="example-correct-location">O</span>
@@ -137,7 +137,7 @@
           <span class="example-wrong">I</span>
           <span class="example-wrong-location">C</span>
         </p>
-        <p class="rules-text">The letter <strong>O</strong> is in the word and in the correct location.</p>
+        <p class="informational-text">The letter <strong>O</strong> is in the word and in the correct location.</p>
         <p class="example-text">
           <span class="example-correct-location">C</span>
           <span class="example-correct-location">O</span>
@@ -145,11 +145,18 @@
           <span class="example-correct-location">E</span>
           <span class="example-correct-location">R</span>
         </p>
-        <p class="rules-text">The Turdle is solved!</p>
+        <p class="informational-text">The Turdle is solved!</p>
+      </section>
+      <section class="collapsed" id="stats-section">
+        <h3>GAME STATS</h3>
+        <p class="informational-text">You've played <span id="stats-total-games">/some number/</span> games.</p>
+        <p class="informational-text">You've guessed the correct word <span id="stats-percent-correct">/some number/</span>% of the time.</p>
+        <p class="informational-text">On average, it takes you <span id="stats-average-guesses">/some number/</span> guesses to find the correct word.</p>
       </section>
       <nav>
         <button type="button" name="play" class="nav-button active" id="play-button">play</button>
         <button type="button" name="rules" class="nav-button" id="rules-button">rules</button>
+        <button type="button" name="rules" class="nav-button" id="stats-button">stats</button>
       </nav>
     </main>
     <script src="words.js"></script>

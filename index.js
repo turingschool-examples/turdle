@@ -10,9 +10,11 @@ var keyLetters = document.querySelectorAll('span');
 var errorMessage = document.querySelector('#error-message');
 var viewRulesButton = document.querySelector('#rules-button');
 var viewGameButton = document.querySelector('#play-button');
+var viewStatsButton = document.querySelector('#stats-button');
 var gameBoard = document.querySelector('#game-section');
 var letterKey = document.querySelector('#key-section');
 var rules = document.querySelector('#rules-section');
+var stats = document.querySelector('#stats-section');
 
 // Event Listeners
 window.addEventListener('load', setGame);
@@ -30,6 +32,8 @@ guessButton.addEventListener('click', submitGuess);
 viewRulesButton.addEventListener('click', viewRules);
 
 viewGameButton.addEventListener('click', viewGame);
+
+viewStatsButton.addEventListener('click', viewStats);
 
 // Functions
 function setGame() {
@@ -164,10 +168,28 @@ function viewRules() {
   letterKey.classList.add('hidden');
   gameBoard.classList.add('collapsed');
   rules.classList.remove('collapsed');
+  stats.classList.add('collapsed');
+  viewGameButton.classList.remove('active');
+  viewRulesButton.classList.add('active');
+  viewStatsButton.classList.remove('active');
 }
 
 function viewGame() {
   letterKey.classList.remove('hidden');
   gameBoard.classList.remove('collapsed');
   rules.classList.add('collapsed');
+  stats.classList.add('collapsed');
+  viewGameButton.classList.add('active');
+  viewRulesButton.classList.remove('active');
+  viewStatsButton.classList.remove('active');
+}
+
+function viewStats() {
+  letterKey.classList.add('hidden');
+  gameBoard.classList.add('collapsed');
+  rules.classList.add('collapsed');
+  stats.classList.remove('collapsed');
+  viewGameButton.classList.remove('active');
+  viewRulesButton.classList.remove('active');
+  viewStatsButton.classList.add('active');
 }

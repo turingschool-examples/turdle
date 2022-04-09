@@ -126,8 +126,9 @@ nav {
   text-align: center;
 }
 
-/* RULES */
-#rules-section {
+/* RULES & STATS */
+#rules-section,
+#stats-section {
   text-align: center;
 }
 
@@ -135,7 +136,7 @@ h3 {
   font-size: 25px;
 }
 
-.rules-text {
+.informational-text {
   font-size: 16px;
   font-weight: normal;
 }
