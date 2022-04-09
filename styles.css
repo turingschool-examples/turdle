@@ -11,8 +11,9 @@ gray (wrong): #A6A6A6
 
 */
 
+/* GENERAL */
+
 * {
-  /* border: 2px solid blue; */
   font-family: 'Fredoka One', cursive;
 }
 
@@ -29,10 +30,11 @@ main {
   justify-content: space-around;
 }
 
-nav {
-  display: flex;
-  flex-direction: column;
+p {
+  font-size: 25px;
 }
+
+/* GAME BOARD (grid) */
 
 input {
   height: 50px;
@@ -45,36 +47,6 @@ input {
 input:focus {
   outline: none;
   border: 2px solid #FDDE59;
-}
-
-#key-section {
-  padding: 25px;
-  padding-top: 0;
-  text-align: center;
-}
-
-p {
-  font-size: 25px;
-}
-
-button {
-  border: none;
-  padding: 5px;
-  font-size: 20px;
-}
-
-.nav-button {
-  margin-top: 10px;
-  width: 200px;
-  margin-right: -160px;
-  color: #C7EEE4;
-  background-color: #599641;
-  letter-spacing: 2px;
-}
-
-.nav-button:hover {
-  background-color: #C7EEE4;
-  color: #599641;
 }
 
 .active {
@@ -94,6 +66,48 @@ button {
   background-color: #A6A6A6;
 }
 
+/* GUESS BUTTON */
+
+button {
+  border: none;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#error-message {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+/* NAV BUTTONS (right side) */
+
+nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-button {
+  margin-top: 10px;
+  width: 200px;
+  margin-right: -160px;
+  color: #C7EEE4;
+  background-color: #599641;
+  letter-spacing: 2px;
+}
+
+.nav-button:hover {
+  background-color: #C7EEE4;
+  color: #599641;
+}
+
+/* LETTERS KEY (left side) */
+
 .correct-location-key {
   color: #FDDE59;
 }
@@ -104,4 +118,10 @@ button {
 
 .wrong-key {
   color: #A6A6A6;
+}
+
+#key-section {
+  padding: 25px;
+  padding-top: 0;
+  text-align: center;
 }
