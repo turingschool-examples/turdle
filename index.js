@@ -8,6 +8,11 @@ var inputs = document.querySelectorAll('input');
 var guessButton = document.querySelector('#guess-button');
 var keyLetters = document.querySelectorAll('span');
 var errorMessage = document.querySelector('#error-message');
+var viewRulesButton = document.querySelector('#rules-button');
+var viewGameButton = document.querySelector('#play-button');
+var gameBoard = document.querySelector('#game-section');
+var letterKey = document.querySelector('#key-section');
+var rules = document.querySelector('#rules-section');
 
 // Event Listeners
 window.addEventListener('load', setGame);
@@ -21,6 +26,10 @@ for (var i = 0; i < keyLetters.length; i++) {
 }
 
 guessButton.addEventListener('click', submitGuess);
+
+viewRulesButton.addEventListener('click', viewRules);
+
+viewGameButton.addEventListener('click', viewGame);
 
 // Functions
 function setGame() {
@@ -149,4 +158,16 @@ function changeRow() {
 
 function declareWinner() {
   console.log('winner!');
+}
+
+function viewRules() {
+  letterKey.classList.add('hidden');
+  gameBoard.classList.add('collapsed');
+  rules.classList.remove('collapsed');
+}
+
+function viewGame() {
+  letterKey.classList.remove('hidden');
+  gameBoard.classList.remove('collapsed');
+  rules.classList.add('collapsed');
 }

@@ -49,11 +49,6 @@ input:focus {
   border: 2px solid #FDDE59;
 }
 
-.active {
-  color: #599641;
-  background-color: #FDDE59;
-}
-
 .correct-location {
   background-color: #FDDE59;
 }
@@ -106,6 +101,11 @@ nav {
   color: #599641;
 }
 
+.active {
+  color: #599641;
+  background-color: #FDDE59;
+}
+
 /* LETTERS KEY (left side) */
 
 .correct-location-key {
@@ -124,4 +124,50 @@ nav {
   padding: 25px;
   padding-top: 0;
   text-align: center;
+}
+
+/* RULES */
+#rules-section {
+  text-align: center;
+}
+
+h3 {
+  font-size: 25px;
+}
+
+.rules-text {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.example-text {
+  margin-top: 75px;
+}
+
+.example-text > span {
+  font-size: 35px;
+  text-align: center;
+  padding: 10px;
+  border: 2px solid black;
+}
+
+.example-correct-location {
+  background-color: #FDDE59;
+}
+
+.example-wrong-location {
+  background-color: #5271FF;
+}
+
+.example-wrong {
+  background-color: #A6A6A6;
+}
+
+/* HIDDEN ELEMENTS */
+.hidden {
+  visibility: hidden;
+}
+
+.collapsed {
+  display: none;
 }
