@@ -7,6 +7,7 @@ var guess = '';
 var inputs = document.querySelectorAll('input');
 var guessButton = document.querySelector('#guess-button');
 var keyLetters = document.querySelectorAll('span');
+var errorMessage = document.querySelector('#error-message');
 
 // Event Listeners
 window.addEventListener('load', setGame);
@@ -70,6 +71,7 @@ function clickLetter(e) {
 
 function submitGuess() {
   if (checkIsWord()) {
+    errorMessage.innerText = '';
     compareGuess();
     if (checkForWin()) {
       declareWinner();
@@ -77,7 +79,7 @@ function submitGuess() {
       changeRow();
     }
   } else {
-    console.log('not a word');
+    errorMessage.innerText = 'Not a valid word. Try again!';
   }
 }
 
