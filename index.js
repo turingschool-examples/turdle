@@ -39,7 +39,10 @@ viewStatsButton.addEventListener('click', viewStats);
 // Functions
 function setGame() {
   winningWord = getRandomWord();
+  console.log(winningWord);
   updateInputPermissions();
+  //clear inputs
+  //change boxes colors
 }
 
 function getRandomWord() {
@@ -169,12 +172,31 @@ function declareWinner() {
   } else {
   spaceHolder.innerText += ` guess!`
   }
-
+  setTimeout(resetGame,500)
 }
 
 function resetGame() {
-  setGame()
+  console.log('gameresetting');
+  spaceHolder.innerText = "";
+  currentRow = 1;
+  guess = "";
+  resetInputs();
+  setGame();
+
+  //updateInputValue
+  //change key box colors
+  //updateKeyColor
+  //updateBox Colors
+
   // setTimeout(console.log(4 seconds),4000)
+}
+
+function resetInputs() {
+  for(var i = 0; i < inputs.length; i++) {
+  inputs[i].classList =""
+  inputs[i].value ="";
+  }
+  inputs[0].focus();
 }
 
 function viewRules() {
