@@ -126,7 +126,9 @@ function compareGuess() {
       updateKeyColor(guessLetters[i], 'wrong-key');
     }
   }
-  
+  // if (checkForWin()) {
+  //   updateKeyColor(guessLetters[i], 'blank')
+  // }
 }
 
 function updateBoxColor(letterLocation, className) {
@@ -169,18 +171,26 @@ function changeRow() {
 function declareWinner() {
   // console.log('winner!');
   //changed above to below
-  if (checkForWin()){
+
     errorMessage.innerText = `Winner! It only took you ${currentRow} guesses`;
     setTimeout (() => {errorMessage.innerText = ""}, 4000);
-    // inputs.forEach(input => input = "")
-    clearInputs()
-  } 
+    restartGame()
+  }
   
-  
-}
-
-function clearInputs() {
-  inputs.forEach(input => input = "")
+  function restartGame() {
+    console.log(inputs)
+    // console.log(guessLetters)
+    inputs[0].focus();
+    setGame();
+  currentRow = 1;
+  updateInputPermissions()
+  inputs.forEach(input => {
+    input.value = "";
+    input.classList = ""
+    })
+  inputs.forEach(input => {
+    
+  })
 }
 
 function viewRules() {

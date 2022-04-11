@@ -96,6 +96,10 @@ input:focus {
   background-color: #A6A6A6;
 }
 
+.blank {
+  background-color: white;
+
+}
 /* GUESS BUTTON */
 
 button {
