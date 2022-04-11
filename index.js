@@ -182,19 +182,15 @@ function resetGame() {
   guess = "";
   resetInputs();
   setGame();
-
-  //updateInputValue
   //change key box colors
-  //updateKeyColor
-  //updateBox Colors
-
   // setTimeout(console.log(4 seconds),4000)
 }
 
 function resetInputs() {
-  for(var i = 0; i < inputs.length; i++) {
+  for(var i = 0; i < 30; i++) {
   inputs[i].classList =""
   inputs[i].value ="";
+  keyLetters[i].classList ="";
   }
   inputs[0].focus();
 }
