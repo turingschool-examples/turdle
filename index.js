@@ -163,8 +163,13 @@ function changeRow() {
 
 function declareWinner() {
   console.log('winner!');
-  spaceHolder.innerText = `You Won Turdle in ${currentRow} guess(es)!`;
-  
+  spaceHolder.innerText = `You Won Turdle in ${currentRow}`;
+  if(currentRow > 1) {
+  spaceHolder.innerText += ` guesses!`;
+  } else {
+  spaceHolder.innerText += ` guess!`
+  }
+
 }
 
 function resetGame() {
