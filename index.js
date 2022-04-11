@@ -38,6 +38,7 @@ viewStatsButton.addEventListener('click', viewStats);
 // Functions
 function setGame() {
   winningWord = getRandomWord();
+  console.log(winningWord)
   updateInputPermissions();
 }
 
@@ -54,7 +55,6 @@ function updateInputPermissions() {
       inputs[i].disabled = false;
     }
   }
-
   inputs[0].focus();
 }
 
@@ -98,21 +98,23 @@ function submitGuess() {
 
 function checkIsWord() {
   guess = '';
-
+  
   for(var i = 0; i < inputs.length; i++) {
     if(inputs[i].id.includes(`-${currentRow}-`)) {
       guess += inputs[i].value;
     }
   }
-
+  //guess is not being recorded
+  // console.log("test", guess)
+  //fixed
   return words.includes(guess);
 }
 
 function compareGuess() {
   var guessLetters = guess.split('');
-
+  
   for (var i = 0; i < guessLetters.length; i++) {
-
+    
     if (winningWord.includes(guessLetters[i]) && winningWord.split('')[i] !== guessLetters[i]) {
       updateBoxColor(i, 'wrong-location');
       updateKeyColor(guessLetters[i], 'wrong-location-key');
@@ -124,30 +126,30 @@ function compareGuess() {
       updateKeyColor(guessLetters[i], 'wrong-key');
     }
   }
-
+  
 }
 
 function updateBoxColor(letterLocation, className) {
   var row = [];
-
+  
   for (var i = 0; i < inputs.length; i++) {
     if(inputs[i].id.includes(`-${currentRow}-`)) {
       row.push(inputs[i]);
     }
   }
-
+  
   row[letterLocation].classList.add(className);
 }
 
 function updateKeyColor(letter, className) {
   var keyLetter = null;
-
+  
   for (var i = 0; i < keyLetters.length; i++) {
     if (keyLetters[i].innerText === letter) {
       keyLetter = keyLetters[i];
     }
   }
-
+  
   keyLetter.classList.add(className);
 }
 
@@ -157,11 +159,28 @@ function checkForWin() {
 
 function changeRow() {
   currentRow++;
+  if(currentRow === 7) {
+    errorMessage.innerText = `You lose!`;
+    setTimeout (() => {errorMessage.innerText = ""}, 4000)
+  }
   updateInputPermissions();
 }
 
 function declareWinner() {
-  console.log('winner!');
+  // console.log('winner!');
+  //changed above to below
+  if (checkForWin()){
+    errorMessage.innerText = `Winner! It only took you ${currentRow} guesses`;
+    setTimeout (() => {errorMessage.innerText = ""}, 4000);
+    // inputs.forEach(input => input = "")
+    clearInputs()
+  } 
+  
+  
+}
+
+function clearInputs() {
+  inputs.forEach(input => input = "")
 }
 
 function viewRules() {

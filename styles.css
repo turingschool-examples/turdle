@@ -41,6 +41,7 @@ p {
 #stats-section,
 nav {
   width: 33%;
+  cursor: pointer;
 }
 
 /* HEADER */
@@ -99,6 +100,7 @@ input:focus {
 
 button {
   border: none;
+  cursor: pointer;
   padding: 5px;
   font-size: 20px;
 }
