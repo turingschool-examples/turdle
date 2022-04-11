@@ -15,6 +15,7 @@ var gameBoard = document.querySelector('#game-section');
 var letterKey = document.querySelector('#key-section');
 var rules = document.querySelector('#rules-section');
 var stats = document.querySelector('#stats-section');
+var spaceHolder = document.querySelector('.space-holder');
 
 // Event Listeners
 window.addEventListener('load', setGame);
@@ -162,6 +163,13 @@ function changeRow() {
 
 function declareWinner() {
   console.log('winner!');
+  spaceHolder.innerText = `You Won Turdle in ${currentRow} guess(es)!`;
+  
+}
+
+function resetGame() {
+  setGame()
+  // setTimeout(console.log(4 seconds),4000)
 }
 
 function viewRules() {
