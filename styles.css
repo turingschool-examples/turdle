@@ -39,6 +39,7 @@ p {
 #game-section,
 #rules-section,
 #stats-section,
+#game-over-section,
 nav {
   width: 33%;
 }
@@ -160,10 +161,11 @@ nav {
   text-align: center;
 }
 
-/* RULES & STATS */
+/* RULES & STATS & GAME OVER */
 
 #rules-section,
-#stats-section {
+#stats-section,
+#game-over-section {
   text-align: center;
 }
 
