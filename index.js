@@ -2,6 +2,7 @@
 var winningWord = '';
 var currentRow = 1;
 var guess = '';
+var gamesPlayed = [];
 
 // Query Selectors
 var inputs = document.querySelectorAll('input');
@@ -165,16 +166,23 @@ function changeRow() {
 }
 
 function declareWinner() {
+  recordGameStats();
+  changeGameOverText();
+  viewGameOverMessage();
+  setTimeout(startNewGame, 4000);
+}
+
+function recordGameStats() {
+  gamesPlayed.push({ solved: true, guesses: currentRow });
+}
+
+function changeGameOverText() {
   gameOverGuessCount.innerText = currentRow;
   if (currentRow < 2) {
     gameOverGuessGrammar.classList.add('collapsed');
   } else {
     gameOverGuessGrammar.classList.remove('collapsed');
   }
-
-  viewGameOverMessage();
-
-  setTimeout(startNewGame, 4000);
 }
 
 function startNewGame() {
@@ -197,6 +205,8 @@ function clearKey() {
     keyLetters[i].classList.remove('correct-location-key', 'wrong-location-key', 'wrong-key');
   }
 }
+
+// Change Page View Functions
 
 function viewRules() {
   letterKey.classList.add('hidden');
