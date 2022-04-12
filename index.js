@@ -179,6 +179,7 @@ function declareWinner() {
 
 function startNewGame() {
   clearGameBoard();
+  clearKey();
   setGame();
   viewGame();
   inputs[0].focus();
@@ -188,6 +189,12 @@ function clearGameBoard() {
   for (var i = 0; i < inputs.length; i++) {
     inputs[i].value = '';
     inputs[i].classList.remove('correct-location', 'wrong-location', 'wrong');
+  }
+}
+
+function clearKey() {
+  for (var i = 0; i < keyLetters.length; i++) {
+    keyLetters[i].classList.remove('correct-location-key', 'wrong-location-key', 'wrong-key');
   }
 }
 
