@@ -1,5 +1,5 @@
 # turdle
-This repo is associated with the [Refactor Tractor - 1 Day Challenge activity](https://frontend.turing.edu/projects/module-2/refactor-tractor-1day-turdle.html).
+This repo is associated with the [Refactor Tractor - 1 Day Challenge activity](https://frontend.turing.edu/projects/turdle.html).
 
 ## Set Up
 1. Fork this repository.
