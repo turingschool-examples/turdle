@@ -1,8 +1,11 @@
+
 // Global Variables
-var winningWord = '';
-var currentRow = 1;
+let words = [];
+let winningWord = '';
+let currentRow = 1;
 var guess = '';
 var gamesPlayed = [];
+
 
 // Query Selectors
 var inputs = document.querySelectorAll('input');
@@ -21,15 +24,20 @@ var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
-window.addEventListener('load', setGame);
+// for (var i = 0; i < inputs.length; i++) {
+//   inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
+// }
 
-for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
-}
+// for (var i = 0; i < keyLetters.length; i++) {
+//   keyLetters[i].addEventListener('click', function() { clickLetter(event) });
+// }
 
-for (var i = 0; i < keyLetters.length; i++) {
-  keyLetters[i].addEventListener('click', function() { clickLetter(event) });
-}
+// window.addEventListener('load', setGame);
+window.addEventListener('load', setGame); // this sets the random winning word
+
+inputs.forEach(input => input.addEventListener('keyup', moveToNextInput)); // looks thru each box in the current row
+
+keyLetters.forEach(letter => letter.addEventListener('click', clickLetter));
 
 guessButton.addEventListener('click', submitGuess);
 
@@ -39,50 +47,70 @@ viewGameButton.addEventListener('click', viewGame);
 
 viewStatsButton.addEventListener('click', viewStats);
 
+// API Data
+const fetchWords = fetch('http://localhost:3001/api/v1/words')
+  // .then(response => console.log(response.json()))
+  .then(response => response.json())
+  .then(data => data)
+  .catch(error => alert(error));
+
+  // console.log(fetchWords) // returns a promise
 // Functions
 function setGame() {
+  fetchWords.then(data => {
+    words = data;
+    // console.log(words)
+    winningWord = getRandomWord(data);
+    console.log(winningWord, 'winningWord')
+  })
   currentRow = 1;
-  winningWord = getRandomWord();
   updateInputPermissions();
 }
 
-function getRandomWord() {
-  var randomIndex = Math.floor(Math.random() * 2500);
-  return words[randomIndex];
+function getRandomWord(data) {
+  const randomIndex = Math.floor(Math.random() * data.length);
+  return data[randomIndex];
 }
 
 function updateInputPermissions() {
-  for(var i = 0; i < inputs.length; i++) {
-    if(!inputs[i].id.includes(`-${currentRow}-`)) {
-      inputs[i].disabled = true;
-    } else {
-      inputs[i].disabled = false;
-    }
-  }
 
+  inputs.forEach(input => {
+    if(!input.id.includes(`-${currentRow}-`)) {
+      input.disabled = true;
+    } else {
+      input.disabled = false;
+    }
+  });
+  
   inputs[0].focus();
 }
 
 function moveToNextInput(e) {
-  var key = e.keyCode || e.charCode;
-
-  if( key !== 8 && key !== 46 ) {
-    var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
-    inputs[indexOfNext].focus();
-  }
+  // const key = e.keyCode || e.charCode;
+  // console.log(key, 'key')
+  
+  const indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
+  inputs[indexOfNext].focus();
+  
+//   if( key !== 8 && key !== 46 ) {
+//     console.log(e.target.id.split('-'))
+//     const indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
+//     console.log(indexOfNext);
+//     inputs[indexOfNext].focus();
+//   }
 }
 
 function clickLetter(e) {
-  var activeInput = null;
-  var activeIndex = null;
-
-  for (var i = 0; i < inputs.length; i++) {
-    if(inputs[i].id.includes(`-${currentRow}-`) && !inputs[i].value && !activeInput) {
-      activeInput = inputs[i];
-      activeIndex = i;
+  let activeInput = null;
+  let activeIndex = null;
+  
+  inputs.forEach(input => {
+    if (input.id.includes(`-${currentRow}-`) && !input.value && !activeInput) {
+      const inputId = input.id.split('-');
+      activeInput = input;
+      activeIndex = parseInt(inputId[2]);
     }
-  }
-
+  });
   activeInput.value = e.target.innerText;
   inputs[activeIndex + 1].focus();
 }
@@ -98,23 +126,25 @@ function submitGuess() {
     }
   } else {
     errorMessage.innerText = 'Not a valid word. Try again!';
+    changeRow(); // added to go to next row
   }
 }
 
-function checkIsWord() {
+function checkIsWord() { 
   guess = '';
 
-  for(var i = 0; i < inputs.length; i++) {
-    if(inputs[i].id.includes(`-${currentRow}-`)) {
-      guess += inputs[i].value;
+  inputs.forEach(input => {
+    if(input.id.includes(`-${currentRow}-`)) {
+      guess += input.value;
     }
-  }
+  })
 
+  console.log(words.includes(guess)) // returns a boolean
   return words.includes(guess);
 }
 
 function compareGuess() {
-  var guessLetters = guess.split('');
+  let guessLetters = guess.split('');
 
   for (var i = 0; i < guessLetters.length; i++) {
 
@@ -135,11 +165,16 @@ function compareGuess() {
 function updateBoxColor(letterLocation, className) {
   var row = [];
 
-  for (var i = 0; i < inputs.length; i++) {
-    if(inputs[i].id.includes(`-${currentRow}-`)) {
-      row.push(inputs[i]);
+  // for (var i = 0; i < inputs.length; i++) {
+  //   if(inputs[i].id.includes(`-${currentRow}-`)) {
+  //     row.push(inputs[i]);
+  //   }
+  // }
+  inputs.forEach(input => {
+    if (input.id.includes(`-${currentRow}-`)) {
+      row.push(input);
     }
-  }
+  });
 
   row[letterLocation].classList.add(className);
 }
