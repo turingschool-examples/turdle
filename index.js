@@ -24,18 +24,9 @@ var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
-// for (var i = 0; i < inputs.length; i++) {
-//   inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
-// }
+window.addEventListener('load', setGame); 
 
-// for (var i = 0; i < keyLetters.length; i++) {
-//   keyLetters[i].addEventListener('click', function() { clickLetter(event) });
-// }
-
-// window.addEventListener('load', setGame);
-window.addEventListener('load', setGame); // this sets the random winning word
-
-inputs.forEach(input => input.addEventListener('keyup', moveToNextInput)); // looks thru each box in the current row
+inputs.forEach(input => input.addEventListener('keyup', moveToNextInput)); 
 
 keyLetters.forEach(letter => letter.addEventListener('click', clickLetter));
 
@@ -49,17 +40,15 @@ viewStatsButton.addEventListener('click', viewStats);
 
 // API Data
 const fetchWords = fetch('http://localhost:3001/api/v1/words')
-  // .then(response => console.log(response.json()))
   .then(response => response.json())
   .then(data => data)
   .catch(error => alert(error));
 
-  // console.log(fetchWords) // returns a promise
+
 // Functions
 function setGame() {
   fetchWords.then(data => {
     words = data;
-    // console.log(words)
     winningWord = getRandomWord(data);
     console.log(winningWord, 'winningWord')
   })
@@ -86,18 +75,18 @@ function updateInputPermissions() {
 }
 
 function moveToNextInput(e) {
-  // const key = e.keyCode || e.charCode;
-  // console.log(key, 'key')
+  const key = e.keyCode || e.charCode;
+  console.log(key, 'key')
   
   const indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
   inputs[indexOfNext].focus();
   
-//   if( key !== 8 && key !== 46 ) {
-//     console.log(e.target.id.split('-'))
-//     const indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
-//     console.log(indexOfNext);
-//     inputs[indexOfNext].focus();
-//   }
+  if( key !== 8 && key !== 46 ) {
+    console.log(e.target.id.split('-'))
+    const indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
+    console.log(indexOfNext);
+    inputs[indexOfNext].focus();
+  }
 }
 
 function clickLetter(e) {
@@ -126,7 +115,7 @@ function submitGuess() {
     }
   } else {
     errorMessage.innerText = 'Not a valid word. Try again!';
-    changeRow(); // added to go to next row
+    changeRow(); 
   }
 }
 
@@ -139,7 +128,7 @@ function checkIsWord() {
     }
   })
 
-  console.log(words.includes(guess)) // returns a boolean
+  console.log(words.includes(guess))
   return words.includes(guess);
 }
 
@@ -165,11 +154,6 @@ function compareGuess() {
 function updateBoxColor(letterLocation, className) {
   var row = [];
 
-  // for (var i = 0; i < inputs.length; i++) {
-  //   if(inputs[i].id.includes(`-${currentRow}-`)) {
-  //     row.push(inputs[i]);
-  //   }
-  // }
   inputs.forEach(input => {
     if (input.id.includes(`-${currentRow}-`)) {
       row.push(input);
