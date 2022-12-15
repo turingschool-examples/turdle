@@ -2497,5 +2497,5 @@ var words = [
   "yours",
   "youth",
   "yummy",
-  "zones"
+  "zones",
 ];
