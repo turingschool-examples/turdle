@@ -20,6 +20,7 @@ var stats = document.querySelector("#stats-section");
 var gameOverBox = document.querySelector("#game-over-section");
 var gameOverGuessCount = document.querySelector("#game-over-guesses-count");
 var gameOverGuessGrammar = document.querySelector("#game-over-guesses-plural");
+const gameOverTextHeadLine = document.querySelector("informational-text");
 var firstLastCell = document.getElementById("cell-6-25");
 var secondLastCell = document.getElementById("cell-6-26");
 var thirdLastCell = document.getElementById("cell-6-27");
@@ -131,7 +132,13 @@ function submitGuess() {
     } else if (!checkForWin() && checkForLastRow()) {
       errorMessage.innerText = "You didn't guess the correct word";
       setTimeout(function () {
-        errorMessage.innerText = "";
+       viewGameOverMessage();
+       gameOverBox.innerHTML = `<h3 id="game-over-message">Oh no!</h3>
+        <p class="informational-text">
+          You lost this round!
+        </p>`;
+        recordGameStats();
+        setTimeout(startNewGame, 4000);
       }, 4000);
     } else {
       changeRow();
@@ -201,15 +208,6 @@ function checkForWin() {
   return guess === winningWord;
 }
 
-function checkForLoss() {
-  if (guess !== winningWord) {
-    errorMessage.innerText = "You didn't guess the correct word";
-    setTimeout(function () {
-      errorMessage.innerText = "";
-    }, 4000);
-  }
-}
-
 function changeRow() {
   currentRow++;
   updateInputPermissions();
@@ -228,7 +226,7 @@ function recordGameStats() {
 
 function changeGameOverText() {
   gameOverGuessCount.innerText = currentRow;
-  if (currentRow < 2) {
+  if (currentRow < 2 && checkForWin()) {
     gameOverGuessGrammar.classList.add("collapsed");
   } else {
     gameOverGuessGrammar.classList.remove("collapsed");
