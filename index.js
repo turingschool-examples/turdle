@@ -1,4 +1,5 @@
 // Global Variables
+var wordChoices;
 var winningWord = '';
 var currentRow = 1;
 var guess = '';
@@ -10,9 +11,9 @@ const fetchAPI = () => {
   return fetch('http://localhost:3001/api/v1/words')
     .then(response => response.json())
     .then(data => {
-      //Do I need to store the entire array in the game? or just the single word?
-      //call random word in here and assign it to the global winningWord
-      console.log(data)
+      wordChoices = data;
+      setGame();
+      console.log('wordChoices in fetch call:', wordChoices)
     })
     .catch(error => console.log(error))
 }
@@ -36,7 +37,6 @@ var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 // Event Listeners
 window.addEventListener('load', function() {
   fetchAPI();
-  setGame();
 });
 
 for (var i = 0; i < inputs.length; i++) {
@@ -59,12 +59,13 @@ viewStatsButton.addEventListener('click', viewStats);
 function setGame() {
   currentRow = 1;
   winningWord = getRandomWord();
+  //console.log('Winning Word: ', winningWord)
   updateInputPermissions();
 }
 
 function getRandomWord() {
   var randomIndex = Math.floor(Math.random() * 2500);
-  return words[randomIndex];
+  return wordChoices[randomIndex]; //changed words => wordChoices
 }
 
 function updateInputPermissions() {
