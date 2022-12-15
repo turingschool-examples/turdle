@@ -132,11 +132,12 @@ function submitGuess() {
     } else if (!checkForWin() && checkForLastRow()) {
       errorMessage.innerText = "You didn't guess the correct word";
       setTimeout(function () {
-       viewGameOverMessage();
-       gameOverBox.innerHTML = `<h3 id="game-over-message">Oh no!</h3>
+        viewGameOverMessage();
+        gameOverBox.innerHTML = `<h3 id="game-over-message">Oh no!</h3>
         <p class="informational-text">
           You lost this round!
         </p>`;
+        errorMessage.innerText = "";
         recordGameStats();
         setTimeout(startNewGame, 4000);
       }, 4000);
@@ -221,7 +222,11 @@ function declareWinner() {
 }
 
 function recordGameStats() {
-  gamesPlayed.push({ solved: true, guesses: currentRow });
+  if (checkForWin()) {
+    gamesPlayed.push({ solved: true, guesses: currentRow });
+  } else if (!checkForWin() && checkForLastRow()) {
+    gamesPlayed.push({ solved: false, guesses: 6 });
+  }
 }
 
 function changeGameOverText() {
