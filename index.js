@@ -20,6 +20,11 @@ var stats = document.querySelector("#stats-section");
 var gameOverBox = document.querySelector("#game-over-section");
 var gameOverGuessCount = document.querySelector("#game-over-guesses-count");
 var gameOverGuessGrammar = document.querySelector("#game-over-guesses-plural");
+var firstLastCell = document.getElementById("cell-6-25");
+var secondLastCell = document.getElementById("cell-6-26");
+var thirdLastCell = document.getElementById("cell-6-27");
+var fourthLastCell = document.getElementById("cell-6-28");
+var fifthLastCell = document.getElementById("cell-6-29");
 
 // Event Listeners
 
@@ -42,6 +47,8 @@ viewRulesButton.addEventListener("click", viewRules);
 viewGameButton.addEventListener("click", viewGame);
 
 viewStatsButton.addEventListener("click", viewStats);
+
+// lastCell.addEventListener("keyup", checkForLoss);
 
 // Functions
 
@@ -103,12 +110,29 @@ function clickLetter(e) {
   inputs[activeIndex + 1].focus();
 }
 
+function checkForLastRow() {
+  if (
+    firstLastCell.value &&
+    secondLastCell.value &&
+    thirdLastCell.value &&
+    fourthLastCell.value &&
+    fifthLastCell.value
+  ) {
+    return true;
+  }
+}
+
 function submitGuess() {
   if (checkIsWord()) {
     errorMessage.innerText = "";
     compareGuess();
     if (checkForWin()) {
       setTimeout(declareWinner, 1000);
+    } else if (!checkForWin() && checkForLastRow()) {
+      errorMessage.innerText = "You didn't guess the correct word";
+      setTimeout(function () {
+        errorMessage.innerText = "";
+      }, 4000);
     } else {
       changeRow();
     }
@@ -175,6 +199,15 @@ function updateKeyColor(letter, className) {
 
 function checkForWin() {
   return guess === winningWord;
+}
+
+function checkForLoss() {
+  if (guess !== winningWord) {
+    errorMessage.innerText = "You didn't guess the correct word";
+    setTimeout(function () {
+      errorMessage.innerText = "";
+    }, 4000);
+  }
 }
 
 function changeRow() {
