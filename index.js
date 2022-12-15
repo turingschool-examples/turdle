@@ -44,6 +44,11 @@ viewGameButton.addEventListener("click", viewGame);
 viewStatsButton.addEventListener("click", viewStats);
 
 // Functions
+
+fetch("http://localhost:3001/api/v1/words")
+  .then((response) => response.json())
+  .then((data) => {});
+
 function setGame() {
   currentRow = 1;
   winningWord = getRandomWord();
