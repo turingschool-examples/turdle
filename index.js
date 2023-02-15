@@ -1,4 +1,12 @@
+// Fetch Requests
+fetch('http://localhost:3001/api/v1/words')
+  .then(response => response.json())
+  .then(data => {
+    words.push(data);
+    });
+
 // Global Variables
+var words = words.flat();
 var winningWord = '';
 var currentRow = 1;
 var guess = '';
