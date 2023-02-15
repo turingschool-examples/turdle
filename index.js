@@ -47,7 +47,7 @@ function setGame() {
 }
 
 function getRandomWord() {
-  var randomIndex = Math.floor(Math.random() * 2500);
+  var randomIndex = Math.floor(Math.random() * words.length);
   return words[randomIndex];
 }
 
