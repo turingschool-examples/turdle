@@ -1,17 +1,16 @@
+// Global Variables
+var words = [];
+var winningWord = '';
+var currentRow = 1;
+var guess = '';
+var gamesPlayed = [];
+
 // Fetch Requests
 fetch('http://localhost:3001/api/v1/words')
   .then(response => response.json())
   .then(data => {
     words.push(data);
     });
-
-// Global Variables
-var words = words.flat();
-var winningWord = '';
-var currentRow = 1;
-var guess = '';
-var gamesPlayed = [];
-
 // Query Selectors
 var inputs = document.querySelectorAll('input');
 var guessButton = document.querySelector('#guess-button');
@@ -29,7 +28,16 @@ var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
-window.addEventListener('load', setGame);
+window.addEventListener('load', () => {
+  fetch('http://localhost:3001/api/v1/words')
+  .then(response => response.json())
+  .then(data => {
+    words.push(data);
+    });
+  
+  words = words.flat();
+  setGame();
+});
 
 for (var i = 0; i < inputs.length; i++) {
   inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
