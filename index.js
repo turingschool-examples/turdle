@@ -1,3 +1,9 @@
+// fetch data
+fetch('http://localhost:3001/api/v1/words')
+.then(response => response.json())
+.then(words => processData(words))
+.catch(err => console.log(err));
+
 // Global Variables
 var winningWord = '';
 var currentRow = 1;
@@ -21,7 +27,10 @@ var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
-window.addEventListener('load', setGame);
+const processData = (words) => {
+  window.addEventListener('load', () => setGame(words));
+  guessButton.addEventListener('click', () => submitGuess(words));
+}
 
 for (var i = 0; i < inputs.length; i++) {
   inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
@@ -31,7 +40,6 @@ for (var i = 0; i < keyLetters.length; i++) {
   keyLetters[i].addEventListener('click', function() { clickLetter(event) });
 }
 
-guessButton.addEventListener('click', submitGuess);
 
 viewRulesButton.addEventListener('click', viewRules);
 
@@ -40,13 +48,13 @@ viewGameButton.addEventListener('click', viewGame);
 viewStatsButton.addEventListener('click', viewStats);
 
 // Functions
-function setGame() {
+function setGame(words) {
   currentRow = 1;
-  winningWord = getRandomWord();
+  winningWord = getRandomWord(words);
   updateInputPermissions();
 }
 
-function getRandomWord() {
+function getRandomWord(words) {
   var randomIndex = Math.floor(Math.random() * 2500);
   return words[randomIndex];
 }
@@ -87,8 +95,8 @@ function clickLetter(e) {
   inputs[activeIndex + 1].focus();
 }
 
-function submitGuess() {
-  if (checkIsWord()) {
+function submitGuess(words) {
+  if (checkIsWord(words)) {
     errorMessage.innerText = '';
     compareGuess();
     if (checkForWin()) {
@@ -101,7 +109,7 @@ function submitGuess() {
   }
 }
 
-function checkIsWord() {
+function checkIsWord(words) {
   guess = '';
 
   for(var i = 0; i < inputs.length; i++) {
