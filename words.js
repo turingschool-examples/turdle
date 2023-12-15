@@ -1,4 +1,4 @@
-var words = [
+/*var words = [
   "aback",
   "abase",
   "abate",
@@ -2498,4 +2498,4 @@ var words = [
   "youth",
   "yummy",
   "zones"
-];
+];*/
