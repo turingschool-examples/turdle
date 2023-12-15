@@ -40,23 +40,50 @@ viewGameButton.addEventListener('click', viewGame);
 viewStatsButton.addEventListener('click', viewStats);
 
 // Functions
-function setGame() {
+async function setGame() {
   currentRow = 1;
-  winningWord = getRandomWord();
-  updateInputPermissions();
+  try {
+    const wordsData = await fetchWords();
+    winningWord = getRandomWordFromAPI(wordsData); // Function to extract a word from the API data
+    updateInputPermissions();
+  } catch (error) {
+    console.error('Error setting up the game:', error);
+  }
 }
 
-function getRandomWord() {
-  var randomIndex = Math.floor(Math.random() * 2500);
-  return words[randomIndex];
+function fetchWords() {
+  return fetch('http://localhost:3001/api/v1/words')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch words from the API');
+      }
+      return response.json();
+    })
+    .catch(error => {
+      console.error('Error fetching words:', error);
+      throw error; // Propagate the error if any issue occurs while fetching words
+    });
+}
+
+function getRandomWordFromAPI(wordsData) {
+  // Modify this function based on the structure of the data received from the API
+  const randomIndex = Math.floor(Math.random() * wordsData.length);
+  return wordsData[randomIndex];
 }
 
 function updateInputPermissions() {
-  for(var i = 0; i < inputs.length; i++) {
-    if(!inputs[i].id.includes(`-${currentRow}-`)) {
+  for (var i = 0; i < inputs.length; i++) {
+    if (!inputs[i].id.includes(`-${currentRow}-`)) {
       inputs[i].disabled = true;
     } else {
       inputs[i].disabled = false;
+    }
+  }
+
+  // Special case to enable inputs for the 6th row even if it's the final turn
+  if (currentRow === 6) {
+    for (var i = 0; i < 5; i++) {
+      inputs[inputs.length - 5 + i].disabled = false;
     }
   }
 
@@ -65,9 +92,9 @@ function updateInputPermissions() {
 
 function moveToNextInput(e) {
   var key = e.keyCode || e.charCode;
+  var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
 
-  if( key !== 8 && key !== 46 ) {
-    var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
+  if (key !== 8 && key !== 46 && inputs[indexOfNext]) {
     inputs[indexOfNext].focus();
   }
 }
@@ -88,29 +115,41 @@ function clickLetter(e) {
 }
 
 function submitGuess() {
-  if (checkIsWord()) {
-    errorMessage.innerText = '';
-    compareGuess();
-    if (checkForWin()) {
-      setTimeout(declareWinner, 1000);
+  if (currentRow <= 6) { // Allow up to 6 guesses
+    if (checkIsWord()) {
+      errorMessage.innerText = '';
+      compareGuess();
+      if (checkForWin()) {
+        setTimeout(declareWinner, 1000);
+      } else if (currentRow === 6) { // Check if it's the 6th guess
+        declareLoss(); // If it's the 6th guess and not a win, trigger the loss scenario
+      } else {
+        changeRow();
+      }
     } else {
-      changeRow();
+      errorMessage.innerText = 'Not a valid word. Try again!';
     }
-  } else {
-    errorMessage.innerText = 'Not a valid word. Try again!';
   }
 }
 
-function checkIsWord() {
+async function checkIsWord() {
   guess = '';
 
-  for(var i = 0; i < inputs.length; i++) {
+  for (var i = 0; i < inputs.length; i++) {
     if(inputs[i].id.includes(`-${currentRow}-`)) {
       guess += inputs[i].value;
     }
   }
 
-  return words.includes(guess);
+  try {
+    const wordsData = await fetchWords(); // Fetch words from the API
+    const wordsList = wordsData.map(word => word.word); // Assuming the API returns an array of words
+
+    return wordsList.includes(guess); // Check if the fetched words include the user's input
+  } catch (error) {
+    console.error('Error fetching words:', error);
+    return false; // Return false in case of an error fetching words
+  }
 }
 
 function compareGuess() {
@@ -170,6 +209,30 @@ function declareWinner() {
   changeGameOverText();
   viewGameOverMessage();
   setTimeout(startNewGame, 4000);
+}
+
+function declareLoss() {
+  recordGameStats(false, 6); // Store game stats for loss with 6 guesses
+  displayLossMessage(); // Display loss message
+  clearGameBoard(); // Clear previous guesses on the game board
+  clearKey(); // Reset key letters to black color
+  setGame(); // Start a new game
+  viewGame(); // Show game section
+  inputs[0].focus(); // Focus on the top left square of the game board
+}
+
+function displayLossMessage() {
+  var messageBox = document.createElement('div');
+  messageBox.classList.add('loss-message');
+  messageBox.textContent = 'You lost! Try again.';
+  
+  // Append the message box to the body
+  document.body.appendChild(messageBox);
+
+  // Set a timeout to remove the message after 4 seconds
+  setTimeout(function() {
+    messageBox.remove();
+  }, 4000);
 }
 
 function recordGameStats() {
