@@ -3,7 +3,7 @@ var winningWord = '';
 var currentRow = 1;
 var guess = '';
 var gamesPlayed = [];
-let fetchedWords = [];
+let words = [];
 
 // Query Selectors
 var inputs = document.querySelectorAll('input');
@@ -45,7 +45,7 @@ viewStatsButton.addEventListener('click', viewStats);
 function startGame() {
   getData()
   .then(data => setGame(data))
-}
+};
 
 
 function getData() {
@@ -53,20 +53,18 @@ function getData() {
   .then(response => {
     return response.json()
   })
-  // .then(data => console.log(data))
   .catch(error => {
     console.log('error')
     return error;
   })
-}
+};
 
-function setGame(dataSet) {//
+function setGame(dataSet) {
   currentRow = 1;
-  winningWord = getRandomWord(dataSet);//
+  winningWord = getRandomWord(dataSet);
   updateInputPermissions();
-  fetchedWords = dataSet//
+  words = dataSet
   console.log('winning word: ', winningWord);
-  console.log('fetchedWords', fetchedWords);
 }
 
 function getRandomWord(dataSet) {
@@ -134,7 +132,7 @@ function checkIsWord() {
     }
   }
 
-  return fetchedWords.includes(guess); //
+  return words.includes(guess);
 }
 
 function compareGuess() {
@@ -212,7 +210,7 @@ function changeGameOverText() {
 function startNewGame() {
   clearGameBoard();
   clearKey();
-  setGame();
+  setGame(words);
   viewGame();
   inputs[0].focus();
 }
