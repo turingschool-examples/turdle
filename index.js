@@ -3,6 +3,7 @@ var winningWord = '';
 var currentRow = 1;
 var guess = '';
 var gamesPlayed = [];
+let fetchedWords = [];
 
 // Query Selectors
 var inputs = document.querySelectorAll('input');
@@ -21,7 +22,8 @@ var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
-window.addEventListener('load', setGame);
+// window.addEventListener('load', setGame);
+window.addEventListener('load', startGame);
 
 for (var i = 0; i < inputs.length; i++) {
   inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
@@ -40,15 +42,36 @@ viewGameButton.addEventListener('click', viewGame);
 viewStatsButton.addEventListener('click', viewStats);
 
 // Functions
-function setGame() {
-  currentRow = 1;
-  winningWord = getRandomWord();
-  updateInputPermissions();
+function startGame() {
+  getData()
+  .then(data => setGame(data))
 }
 
-function getRandomWord() {
+
+function getData() {
+  return fetch('http://localhost:3001/api/v1/words')
+  .then(response => {
+    return response.json()
+  })
+  // .then(data => console.log(data))
+  .catch(error => {
+    console.log('error')
+    return error;
+  })
+}
+
+function setGame(dataSet) {//
+  currentRow = 1;
+  winningWord = getRandomWord(dataSet);//
+  updateInputPermissions();
+  fetchedWords = dataSet//
+  console.log('winning word: ', winningWord);
+  console.log('fetchedWords', fetchedWords);
+}
+
+function getRandomWord(dataSet) {
   var randomIndex = Math.floor(Math.random() * 2500);
-  return words[randomIndex];
+  return dataSet[randomIndex];//
 }
 
 function updateInputPermissions() {
@@ -99,6 +122,7 @@ function submitGuess() {
   } else {
     errorMessage.innerText = 'Not a valid word. Try again!';
   }
+  console.log('current row: ', currentRow)
 }
 
 function checkIsWord() {
@@ -110,7 +134,7 @@ function checkIsWord() {
     }
   }
 
-  return words.includes(guess);
+  return fetchedWords.includes(guess); //
 }
 
 function compareGuess() {
