@@ -97,20 +97,34 @@ function clickLetter(e) {
 }
 
 function submitGuess() {
-  if (checkIsWord()) {
-    errorMessage.innerText = '';
-    compareGuess();
-    if (checkForWin()) {
-      setTimeout(declareWinner, 1000);
+  fetchData()
+  .then((data) => {
+    if (checkIsWord(data)) {
+      errorMessage.innerText = '';
+      compareGuess();
+      if (checkForWin()) {
+        setTimeout(declareWinner, 1000);
+      } else {
+        changeRow();
+      }
     } else {
-      changeRow();
+      errorMessage.innerText = 'Not a valid word. Try again!';
     }
-  } else {
-    errorMessage.innerText = 'Not a valid word. Try again!';
-  }
+  })
+  // if (checkIsWord()) {
+  //   errorMessage.innerText = '';
+  //   compareGuess();
+  //   if (checkForWin()) {
+  //     setTimeout(declareWinner, 1000);
+  //   } else {
+  //     changeRow();
+  //   }
+  // } else {
+  //   errorMessage.innerText = 'Not a valid word. Try again!';
+  // }
 }
 
-function checkIsWord() {
+function checkIsWord(data) {
   guess = '';
 
   for(var i = 0; i < inputs.length; i++) {
@@ -119,7 +133,7 @@ function checkIsWord() {
     }
   }
 
-  return words.includes(guess);
+  return data.includes(guess);
 }
 
 function compareGuess() {
