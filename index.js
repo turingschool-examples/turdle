@@ -42,13 +42,22 @@ viewStatsButton.addEventListener('click', viewStats);
 // Functions
 function setGame() {
   currentRow = 1;
-  winningWord = getRandomWord();
-  updateInputPermissions();
+  fetchData()
+    .then((data) => {
+      winningWord = getRandomWord(data);
+      updateInputPermissions();
+    })
 }
 
-function getRandomWord() {
+function fetchData() {
+  return fetch("http://localhost:3001/api/v1/words")
+  .then(res => res.json())
+  .catch(err => console.log(err))
+}
+
+function getRandomWord(data) {
   var randomIndex = Math.floor(Math.random() * 2500);
-  return words[randomIndex];
+  return data[randomIndex];
 }
 
 function updateInputPermissions() {
