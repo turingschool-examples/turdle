@@ -74,11 +74,17 @@ function updateInputPermissions() {
 
 function moveToNextInput(e) {
   var key = e.keyCode || e.charCode;
+  var indexOfNext;
 
-  if( key !== 8 && key !== 46 ) {
+  if (key !== 8 && key !== 46) {
     var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
-    inputs[indexOfNext].focus();
   }
+
+  if (indexOfNext === 30) {
+    indexOfNext = 0;
+  }
+
+  inputs[indexOfNext].focus();
 }
 
 function clickLetter(e) {
@@ -97,20 +103,23 @@ function clickLetter(e) {
 }
 
 function submitGuess() {
-  if (checkIsWord()) {
-    errorMessage.innerText = '';
-    compareGuess();
-    if (checkForWin()) {
-      setTimeout(declareWinner, 1000);
+  fetchData()
+  .then((data) => {
+    if (checkIsWord(data)) {
+      errorMessage.innerText = '';
+      compareGuess();
+      if (checkForWin() || currentRow === 6) {
+        setTimeout(declareWinner, 1000);
+      } else {
+        changeRow();
+      }
     } else {
-      changeRow();
+      errorMessage.innerText = 'Not a valid word. Try again!';
     }
-  } else {
-    errorMessage.innerText = 'Not a valid word. Try again!';
-  }
+  })
 }
 
-function checkIsWord() {
+function checkIsWord(data) {
   guess = '';
 
   for(var i = 0; i < inputs.length; i++) {
@@ -119,7 +128,7 @@ function checkIsWord() {
     }
   }
 
-  return words.includes(guess);
+  return data.includes(guess);
 }
 
 function compareGuess() {
@@ -181,8 +190,14 @@ function declareWinner() {
   setTimeout(startNewGame, 4000);
 }
 
+
 function recordGameStats() {
-  gamesPlayed.push({ solved: true, guesses: currentRow });
+  if (checkForWin()) {
+    gamesPlayed.push({ solved: true, guesses: currentRow });
+  } 
+  if (!checkForWin() && currentRow === 6) {
+    gamesPlayed.push({ solved: false, guesses: currentRow});
+  }
 }
 
 function changeGameOverText() {
@@ -248,8 +263,18 @@ function viewStats() {
   viewStatsButton.classList.add('active');
 }
 
+
+
 function viewGameOverMessage() {
+  if (!checkForWin() && currentRow === 6) {
+    gameOverBox.innerHTML = `<h3 id="game-over-message">BOOOO!</h1>
+                              <p class="informational-text">You suck.</p>`
+  } else {
+    gameOverBox.innerHTML = `<h3 id="game-over-message">YAY!</h1>
+                              <p class="informational-text">You did it! It took you ${currentRow} tries to find the correct word.</p>`
+  }
   gameOverBox.classList.remove('collapsed')
   letterKey.classList.add('hidden');
   gameBoard.classList.add('collapsed');
 }
+
