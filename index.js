@@ -19,6 +19,7 @@ var stats = document.querySelector('#stats-section');
 var gameOverBox = document.querySelector('#game-over-section');
 var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
+var statsSection = document.querySelector("#stats-section")
 
 // Event Listeners
 window.addEventListener('load', setGame);
@@ -254,6 +255,7 @@ function viewGame() {
 }
 
 function viewStats() {
+  renderStats();
   letterKey.classList.add('hidden');
   gameBoard.classList.add('collapsed');
   rules.classList.add('collapsed');
@@ -261,6 +263,19 @@ function viewStats() {
   viewGameButton.classList.remove('active');
   viewRulesButton.classList.remove('active');
   viewStatsButton.classList.add('active');
+}
+
+function renderStats() {
+  const percentRight = gamesPlayed.filter(game => game.solved).length / gamesPlayed.length * 100;
+  const averageTries = gamesPlayed.filter(game => game.solved).reduce((acc, game) => {
+    acc += game.guesses
+    return acc
+  }, 0) / gamesPlayed.length;
+
+  statsSection.innerHTML = `<h3>GAME STATS</h3>
+                            <p class="informational-text">You've played ${gamesPlayed.length} games.</p>
+                            <p class="informational-text">You've guessed the correct word ${percentRight}% of the time.</p>
+                            <p class="informational-text">On average, it takes you ${averageTries} guesses to find the correct word.</p>`;
 }
 
 
