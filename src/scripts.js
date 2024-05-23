@@ -1,3 +1,7 @@
+import './styles.css';
+import './assets/turdle-turtle.png';
+import { words } from './words.js';
+
 // Global Variables
 var winningWord = '';
 var currentRow = 1;
@@ -24,11 +28,11 @@ var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 window.addEventListener('load', setGame);
 
 for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
+  inputs[i].addEventListener('keyup', function () { moveToNextInput(event) });
 }
 
 for (var i = 0; i < keyLetters.length; i++) {
-  keyLetters[i].addEventListener('click', function() { clickLetter(event) });
+  keyLetters[i].addEventListener('click', function () { clickLetter(event) });
 }
 
 guessButton.addEventListener('click', submitGuess);
@@ -52,8 +56,8 @@ function getRandomWord() {
 }
 
 function updateInputPermissions() {
-  for(var i = 0; i < inputs.length; i++) {
-    if(!inputs[i].id.includes(`-${currentRow}-`)) {
+  for (var i = 0; i < inputs.length; i++) {
+    if (!inputs[i].id.includes(`-${currentRow}-`)) {
       inputs[i].disabled = true;
     } else {
       inputs[i].disabled = false;
@@ -66,7 +70,7 @@ function updateInputPermissions() {
 function moveToNextInput(e) {
   var key = e.keyCode || e.charCode;
 
-  if( key !== 8 && key !== 46 ) {
+  if (key !== 8 && key !== 46) {
     var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
     inputs[indexOfNext].focus();
   }
@@ -77,7 +81,7 @@ function clickLetter(e) {
   var activeIndex = null;
 
   for (var i = 0; i < inputs.length; i++) {
-    if(inputs[i].id.includes(`-${currentRow}-`) && !inputs[i].value && !activeInput) {
+    if (inputs[i].id.includes(`-${currentRow}-`) && !inputs[i].value && !activeInput) {
       activeInput = inputs[i];
       activeIndex = i;
     }
@@ -104,8 +108,8 @@ function submitGuess() {
 function checkIsWord() {
   guess = '';
 
-  for(var i = 0; i < inputs.length; i++) {
-    if(inputs[i].id.includes(`-${currentRow}-`)) {
+  for (var i = 0; i < inputs.length; i++) {
+    if (inputs[i].id.includes(`-${currentRow}-`)) {
       guess += inputs[i].value;
     }
   }
@@ -136,7 +140,7 @@ function updateBoxColor(letterLocation, className) {
   var row = [];
 
   for (var i = 0; i < inputs.length; i++) {
-    if(inputs[i].id.includes(`-${currentRow}-`)) {
+    if (inputs[i].id.includes(`-${currentRow}-`)) {
       row.push(inputs[i]);
     }
   }
