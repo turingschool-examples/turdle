@@ -1,38 +1,38 @@
 import './styles.css';
 import './assets/turdle-turtle.png';
-import { words } from './words.js';
+import { words } from './words';
 
 // Global Variables
-var winningWord = '';
-var currentRow = 1;
-var guess = '';
-var gamesPlayed = [];
+var winningWord: string = '';
+var currentRow: number = 1;
+var guess: string = '';
+var gamesPlayed: { solved: boolean, guesses: number }[] = [];
 
 // Query Selectors
-var inputs = document.querySelectorAll('input');
-var guessButton = document.querySelector('#guess-button');
-var keyLetters = document.querySelectorAll('span');
-var errorMessage = document.querySelector('#error-message');
-var viewRulesButton = document.querySelector('#rules-button');
-var viewGameButton = document.querySelector('#play-button');
-var viewStatsButton = document.querySelector('#stats-button');
-var gameBoard = document.querySelector('#game-section');
-var letterKey = document.querySelector('#key-section');
-var rules = document.querySelector('#rules-section');
-var stats = document.querySelector('#stats-section');
-var gameOverBox = document.querySelector('#game-over-section');
-var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
-var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
+var inputs: NodeListOf<HTMLInputElement> = document.querySelectorAll('input');
+var guessButton: HTMLButtonElement = document.querySelector('#guess-button')!;
+var keyLetters: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
+var errorMessage: HTMLSpanElement = document.querySelector('#error-message')!;
+var viewRulesButton: HTMLButtonElement = document.querySelector('#rules-button')!;
+var viewGameButton: HTMLButtonElement = document.querySelector('#play-button')!;
+var viewStatsButton: HTMLButtonElement = document.querySelector('#stats-button')!;
+var gameBoard: HTMLDivElement = document.querySelector('#game-section')!;
+var letterKey: HTMLDivElement = document.querySelector('#key-section')!;
+var rules: HTMLDivElement = document.querySelector('#rules-section')!;
+var stats: HTMLDivElement = document.querySelector('#stats-section')!;
+var gameOverBox: HTMLDivElement = document.querySelector('#game-over-section')!;
+var gameOverGuessCount: HTMLSpanElement = document.querySelector('#game-over-guesses-count')!;
+var gameOverGuessGrammar: HTMLSpanElement = document.querySelector('#game-over-guesses-plural')!;
 
 // Event Listeners
 window.addEventListener('load', setGame);
 
 for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('keyup', function () { moveToNextInput(event) });
+  inputs[i].addEventListener('keyup', function(event: KeyboardEvent) { moveToNextInput(event) });
 }
 
 for (var i = 0; i < keyLetters.length; i++) {
-  keyLetters[i].addEventListener('click', function () { clickLetter(event) });
+  keyLetters[i].addEventListener('click', function(event: MouseEvent) { clickLetter(event as MouseEvent) });
 }
 
 guessButton.addEventListener('click', submitGuess);
@@ -44,20 +44,21 @@ viewGameButton.addEventListener('click', viewGame);
 viewStatsButton.addEventListener('click', viewStats);
 
 // Functions
-function setGame() {
+function setGame(): void {
   currentRow = 1;
   winningWord = getRandomWord();
+  console.log(winningWord);
   updateInputPermissions();
 }
 
-function getRandomWord() {
+function getRandomWord(): string {
   var randomIndex = Math.floor(Math.random() * 2500);
   return words[randomIndex];
 }
 
-function updateInputPermissions() {
-  for (var i = 0; i < inputs.length; i++) {
-    if (!inputs[i].id.includes(`-${currentRow}-`)) {
+function updateInputPermissions(): void {
+  for(var i = 0; i < inputs.length; i++) {
+    if(!inputs[i].id.includes(`-${currentRow}-`)) {
       inputs[i].disabled = true;
     } else {
       inputs[i].disabled = false;
@@ -67,28 +68,30 @@ function updateInputPermissions() {
   inputs[0].focus();
 }
 
-function moveToNextInput(e) {
+function moveToNextInput(e: KeyboardEvent): void {
   var key = e.keyCode || e.charCode;
 
-  if (key !== 8 && key !== 46) {
-    var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
+  if( key !== 8 && key !== 46 ) {
+    var indexOfNext = parseInt((e.target as HTMLInputElement).id.split('-')[2]) + 1;
     inputs[indexOfNext].focus();
   }
 }
 
-function clickLetter(e) {
-  var activeInput = null;
-  var activeIndex = null;
+function clickLetter(e: MouseEvent): void {
+  var activeInput: HTMLInputElement | null = null;
+  var activeIndex: number | null = null;
 
   for (var i = 0; i < inputs.length; i++) {
-    if (inputs[i].id.includes(`-${currentRow}-`) && !inputs[i].value && !activeInput) {
+    if(inputs[i].id.includes(`-${currentRow}-`) && !inputs[i].value && !activeInput) {
       activeInput = inputs[i];
       activeIndex = i;
     }
   }
 
-  activeInput.value = e.target.innerText;
-  inputs[activeIndex + 1].focus();
+  if (activeInput && activeIndex !== null) {
+    activeInput.value = (e.target as HTMLSpanElement).innerText;
+    inputs[activeIndex + 1].focus();
+  }
 }
 
 function submitGuess() {
@@ -105,11 +108,11 @@ function submitGuess() {
   }
 }
 
-function checkIsWord() {
+function checkIsWord(): boolean {
   guess = '';
 
-  for (var i = 0; i < inputs.length; i++) {
-    if (inputs[i].id.includes(`-${currentRow}-`)) {
+  for(var i = 0; i < inputs.length; i++) {
+    if(inputs[i].id.includes(`-${currentRow}-`)) {
       guess += inputs[i].value;
     }
   }
@@ -117,8 +120,8 @@ function checkIsWord() {
   return words.includes(guess);
 }
 
-function compareGuess() {
-  var guessLetters = guess.split('');
+function compareGuess(): void {
+  var guessLetters: string[] = guess.split('');
 
   for (var i = 0; i < guessLetters.length; i++) {
 
@@ -136,11 +139,11 @@ function compareGuess() {
 
 }
 
-function updateBoxColor(letterLocation, className) {
-  var row = [];
+function updateBoxColor(letterLocation: number, className: string): void {
+  var row: HTMLInputElement[] = [];
 
   for (var i = 0; i < inputs.length; i++) {
-    if (inputs[i].id.includes(`-${currentRow}-`)) {
+    if(inputs[i].id.includes(`-${currentRow}-`)) {
       row.push(inputs[i]);
     }
   }
@@ -148,8 +151,8 @@ function updateBoxColor(letterLocation, className) {
   row[letterLocation].classList.add(className);
 }
 
-function updateKeyColor(letter, className) {
-  var keyLetter = null;
+function updateKeyColor(letter: string, className: string): void {
+  var keyLetter: HTMLSpanElement | null = null;
 
   for (var i = 0; i < keyLetters.length; i++) {
     if (keyLetters[i].innerText === letter) {
@@ -157,31 +160,33 @@ function updateKeyColor(letter, className) {
     }
   }
 
-  keyLetter.classList.add(className);
+  if (keyLetter) {
+    keyLetter.classList.add(className);
+  }
 }
 
-function checkForWin() {
+function checkForWin(): boolean {
   return guess === winningWord;
 }
 
-function changeRow() {
+function changeRow(): void {
   currentRow++;
   updateInputPermissions();
 }
 
-function declareWinner() {
+function declareWinner(): void {
   recordGameStats();
   changeGameOverText();
   viewGameOverMessage();
   setTimeout(startNewGame, 4000);
 }
 
-function recordGameStats() {
+function recordGameStats(): void {
   gamesPlayed.push({ solved: true, guesses: currentRow });
 }
 
-function changeGameOverText() {
-  gameOverGuessCount.innerText = currentRow;
+function changeGameOverText(): void {
+  gameOverGuessCount.innerText = currentRow.toString();
   if (currentRow < 2) {
     gameOverGuessGrammar.classList.add('collapsed');
   } else {
@@ -189,7 +194,7 @@ function changeGameOverText() {
   }
 }
 
-function startNewGame() {
+function startNewGame(): void {
   clearGameBoard();
   clearKey();
   setGame();
@@ -197,14 +202,14 @@ function startNewGame() {
   inputs[0].focus();
 }
 
-function clearGameBoard() {
+function clearGameBoard(): void {
   for (var i = 0; i < inputs.length; i++) {
     inputs[i].value = '';
     inputs[i].classList.remove('correct-location', 'wrong-location', 'wrong');
   }
 }
 
-function clearKey() {
+function clearKey(): void {
   for (var i = 0; i < keyLetters.length; i++) {
     keyLetters[i].classList.remove('correct-location-key', 'wrong-location-key', 'wrong-key');
   }
@@ -212,7 +217,7 @@ function clearKey() {
 
 // Change Page View Functions
 
-function viewRules() {
+function viewRules(): void {
   letterKey.classList.add('hidden');
   gameBoard.classList.add('collapsed');
   rules.classList.remove('collapsed');
@@ -222,7 +227,7 @@ function viewRules() {
   viewStatsButton.classList.remove('active');
 }
 
-function viewGame() {
+function viewGame(): void {
   letterKey.classList.remove('hidden');
   gameBoard.classList.remove('collapsed');
   rules.classList.add('collapsed');
@@ -233,7 +238,7 @@ function viewGame() {
   viewStatsButton.classList.remove('active');
 }
 
-function viewStats() {
+function viewStats(): void {
   letterKey.classList.add('hidden');
   gameBoard.classList.add('collapsed');
   rules.classList.add('collapsed');
@@ -243,8 +248,9 @@ function viewStats() {
   viewStatsButton.classList.add('active');
 }
 
-function viewGameOverMessage() {
+function viewGameOverMessage(): void {
   gameOverBox.classList.remove('collapsed')
   letterKey.classList.add('hidden');
   gameBoard.classList.add('collapsed');
 }
+
