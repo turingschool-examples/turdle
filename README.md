@@ -27,4 +27,4 @@ cd turdle
 6. **Open the App**: Open the app in your browser by navigating to `http://localhost:8080`.
 
 ## Spice It Up!
-Want to spice up your Turdle experience?  Switch over to the "ts-starter" to work through the exercise using TypeScript!
+Want to spice up your Turdle experience?  Switch over to the `ts-starter` branch to work through the exercise using TypeScript!
